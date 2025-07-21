@@ -1,68 +1,82 @@
+
 <!DOCTYPE html>
-<html lang="zh-Hant">
+<html lang="en">
 <head>
-    <meta charset="UTF-8">
-    <meta name="viewport" content="width=648, initial-scale=1">
-    <title>AI Test Plan Assistant - Chatbot Demo</title>
-    <style>
-        body { background: #f3f4f6; font-family: 'Segoe UI', 'Arial', sans-serif; margin: 0; padding: 0;}
-        #main-wrapper { max-width: 540px; margin: 48px auto; box-shadow: 0 6px 32px #0001; border-radius: 22px; overflow: hidden; background: #fff;}
-        .chat-header {
-            display: flex;
-            align-items: center;
-            background: #6366f1;
-            color: #fff;
-            padding: 10px 19px 10px 17px;
-            border-bottom: 1px solid #e0e7ff33;
-            position: relative;
-            min-height: 48px;
-        }
-        .header-logo {
-            width: 32px;
-            height: 32px;
-            border-radius: 50%;
-            background: #fff;
-            display: flex;
-            align-items: center;
-            justify-content: center;
-            margin-right: 10px;
-            font-size: 1.25rem;
-            font-weight: bold;
-            color: #6366f1;
-            box-shadow: 0 1px 4px #6366f122;
-            overflow: hidden;
-        }
-        .header-title {
-            font-size: 1.1rem;
-            font-weight: 600;
-            letter-spacing: 0.5px;
-        }
-        #chat-container { height: 480px; overflow-y: auto; padding: 29px 20px; background: #f8fafc;}
-        .message-container { display: flex; align-items: flex-end; margin-bottom: 18px;}
-        .user-bubble, .ai-bubble { padding: 10px 18px; border-radius: 18px; max-width: 68%; font-size: 1rem; word-break: break-word; box-shadow: 0 2px 10px #0001;}
-        .user-bubble { background: #6366f1; color: #fff; margin-left: auto; margin-right: 8px; border-bottom-right-radius: 4px;}
-        .ai-bubble { background: #e0e7ff; color: #333; margin-right: auto; margin-left: 8px; border-bottom-left-radius: 4px;}
-        .user-avatar, .ai-avatar { width: 34px; height: 34px; border-radius: 50%; display: flex; align-items: center; justify-content: center; font-weight: bold; font-size: 1.1rem; box-shadow: 0 2px 8px #0002; flex-shrink: 0;}
-        .ai-avatar { background: #6366f1; color: #fff;}
-        .user-avatar { background: #fbbf24; color: #fff;}
-        .input-area { display: flex; background: #fff; border-top: 1px solid #e5e7eb; padding: 16px 14px;}
-        #user-input { flex: 1; font-size: 1rem; padding: 8px 13px; border: 1px solid #e5e7eb; border-radius: 10px 0 0 10px; outline: none; background: #f3f4f6; transition: box-shadow 0.2s;}
-        #user-input:focus { box-shadow: 0 0 0 2px #a5b4fc; border-color: #a5b4fc; background: #fff;}
-        #send-button { background: #6366f1; color: #fff; border: none; border-radius: 0 10px 10px 0; padding: 0 20px; cursor: pointer; transition: background 0.2s; display: flex; align-items: center; justify-content: center;}
-        #send-button:hover { background: #4338ca;}
-        .typing-indicator { display: flex; align-items: center; background: #e0e7ff; color: #6366f1; padding: 8px 14px; border-radius: 16px; font-size: 1rem; margin-left: 8px;}
-        .typing-dot { width: 7px; height: 7px; background: #6366f1; border-radius: 50%; margin: 0 2px; animation: blink 1.2s infinite both; opacity: 0.6;}
-        .typing-dot:nth-child(2) { animation-delay: 0.2s; }
-        .typing-dot:nth-child(3) { animation-delay: 0.4s; }
-        /* 美化AI表格 */
-        .ai-bubble table { border-collapse: collapse; width: 100%; margin-top: 6px; margin-bottom: 6px;}
-        .ai-bubble th, .ai-bubble td { border: none; padding: 7px 8px; text-align: left;}
-        .ai-bubble th { background: #e0e7ff; font-weight: 600;}
-        .ai-bubble tr:nth-child(even) td { background: #f3f4f6; }
-        .ai-bubble tr:last-child td { border-bottom: none;}
-        .ai-bubble td, .ai-bubble th { font-size: 0.98rem;}
-        @keyframes blink { 0%, 100% { opacity: 0.6; } 50% { opacity: 1; } }
-    </style>
+<meta charset="UTF-8">
+<title>AI Test Plan Assistant</title>
+<meta name="viewport" content="width=648, initial-scale=1">
+<style>
+body { background: #f3f4f6; font-family: 'Segoe UI', 'Arial', sans-serif; margin: 0; padding: 0;}
+#main-wrapper { max-width: 950px; margin: 48px auto; box-shadow: 0 6px 32px #0001; border-radius: 22px; overflow: hidden; background: #fff;}
+.chat-header {
+    display: flex;
+    align-items: center;
+    background: #6366f1;
+    color: #fff;
+    padding: 10px 19px 10px 17px;
+    border-bottom: 1px solid #e0e7ff33;
+    position: relative;
+    min-height: 48px;
+}
+.header-logo {
+    width: 32px;
+    height: 32px;
+    border-radius: 50%;
+    background: #fff;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    margin-right: 10px;
+    font-size: 1.25rem;
+    font-weight: bold;
+    color: #6366f1;
+    box-shadow: 0 1px 4px #6366f122;
+    overflow: hidden;
+}
+.header-title {
+    font-size: 1.1rem;
+    font-weight: 600;
+    letter-spacing: 0.5px;
+}
+#chat-container { height: 480px; overflow-y: auto; padding: 29px 20px; background: #f8fafc;}
+.message-container { display: flex; align-items: flex-end; margin-bottom: 18px;}
+.user-bubble, .ai-bubble { padding: 10px 18px; border-radius: 18px; max-width: 85%; font-size: 1rem; word-break: break-word; box-shadow: 0 2px 10px #0001;}
+.user-bubble { background: #6366f1; color: #fff; margin-left: auto; margin-right: 8px; border-bottom-right-radius: 4px;}
+.ai-bubble { background: #e0e7ff; color: #333; margin-right: auto; margin-left: 8px; border-bottom-left-radius: 4px;}
+.user-avatar, .ai-avatar { width: 34px; height: 34px; border-radius: 50%; display: flex; align-items: center; justify-content: center; font-weight: bold; font-size: 1.1rem; box-shadow: 0 2px 8px #0002; flex-shrink: 0;}
+.ai-avatar { background: #6366f1; color: #fff;}
+.user-avatar { background: #fbbf24; color: #fff;}
+.input-area { display: flex; background: #fff; border-top: 1px solid #e5e7eb; padding: 16px 14px;}
+#user-input { flex: 1; font-size: 1rem; padding: 8px 13px; border: 1px solid #e5e7eb; border-radius: 10px 0 0 10px; outline: none; background: #f3f4f6; transition: box-shadow 0.2s;}
+#user-input:focus { box-shadow: 0 0 0 2px #a5b4fc; border-color: #a5b4fc; background: #fff;}
+#send-button { background: #6366f1; color: #fff; border: none; border-radius: 0 10px 10px 0; padding: 0 20px; cursor: pointer; transition: background 0.2s; display: flex; align-items: center; justify-content: center;}
+#send-button:hover { background: #4338ca;}
+.typing-indicator { display: flex; align-items: center; background: #e0e7ff; color: #6366f1; padding: 8px 14px; border-radius: 16px; font-size: 1rem; margin-left: 8px;}
+.typing-dot { width: 7px; height: 7px; background: #6366f1; border-radius: 50%; margin: 0 2px; animation: blink 1.2s infinite both; opacity: 0.6;}
+.typing-dot:nth-child(2) { animation-delay: 0.2s; }
+.typing-dot:nth-child(3) { animation-delay: 0.4s; }
+@keyframes blink { 0%, 100% { opacity: 0.6; } 50% { opacity: 1; } }
+/* 美化表格、圖片、連結 */
+.ai-bubble table { border-collapse: collapse; width: 100%; margin-top: 6px; margin-bottom: 6px;}
+.ai-bubble th, .ai-bubble td { border: none; padding: 7px 8px; text-align: left;}
+.ai-bubble th { background: #e0e7ff; font-weight: 600;}
+.ai-bubble tr:nth-child(even) td { background: #f3f4f6; }
+.ai-bubble tr:last-child td { border-bottom: none;}
+.ai-bubble td, .ai-bubble th { font-size: 0.98rem;}
+.ai-bubble img {
+    max-width: 100%;
+    border-radius: 10px;
+    margin-top: 6px;
+    margin-bottom: 6px;
+    box-shadow: 0 2px 8px #0001;
+}
+.ai-bubble a {
+    color: #4f46e5;
+    text-decoration: underline;
+    font-size: 1rem;
+    word-break: break-all;
+}
+</style>
 </head>
 <body>
 <div id="main-wrapper">
@@ -83,109 +97,80 @@
     </div>
 </div>
 <script>
-// ======= 對話腳本 JSON 格式（多段searching）======
 const chatScript = [
   {
-    "user": "Hello!",
+    "user": "provide the joint band and gemini combination for jayer and iqoo",
     "ai": {
       "searchings": [
-        {"text": "Analyzing your request...", "time": 900}
+        { "text": "Searching for Internal Phone's capability...", "time": 900 },
+        { "text": "Searching for Reference Phone's capability...", "time": 900 },
+        { "text": "Joining the Gemini and Band Combination...", "time": 1100 }
       ],
-      "searchingDelay": 250,
-      "reply": "Hi there! How can I assist you today?"
-    },
-    "delayAfter": 1000
-  },
-  {
-    "user": "What is the weather today?",
-    "ai": {
-      "searchings": [
-        {"text": "Searching weather database...", "time": 900},
-        {"text": "Checking for the latest updates...", "time": 1000}
-      ],
-      "searchingDelay": 400,
-      "reply": "The weather today is sunny with a high of 28°C."
-    },
-    "delayAfter": 1200
-  },
-  {
-    "user": "Can you recommend a good restaurant nearby?",
-    "ai": {
-      "searchings": [
-        {"text": "正在搜尋餐廳...", "time": 1000},
-        {"text": "分析評價資料...", "time": 1200}
-      ],
-      "searchingDelay": 400,
+      "searchingDelay": 350,
       "reply": `
-        <div style="font-weight:600;margin-bottom:8px;">以下是附近五家熱門餐廳：</div>
-        <table>
-          <thead>
-            <tr>
-              <th style="border-radius:8px 0 0 8px;">名稱</th>
-              <th>價格</th>
-              <th>距離</th>
-              <th>評價</th>
-              <th style="border-radius:0 8px 8px 0;">特色</th>
-            </tr>
-          </thead>
-          <tbody>
-            <tr>
-              <td>義式小館</td><td>$</td><td>300m</td><td>4.6</td><td>手工披薩</td>
-            </tr>
-            <tr>
-              <td>阿成牛肉麵</td><td>$</td><td>450m</td><td>4.3</td><td>平價大碗</td>
-            </tr>
-            <tr>
-              <td>日日咖啡</td><td>$$</td><td>520m</td><td>4.7</td><td>早午餐</td>
-            </tr>
-            <tr>
-              <td>新味壽司</td><td>$$</td><td>390m</td><td>4.5</td><td>生魚片</td>
-            </tr>
-            <tr>
-              <td>湘園小炒</td><td>$</td><td>200m</td><td>4.2</td><td>家常菜</td>
-            </tr>
-          </tbody>
-        </table>
+      <div style="font-weight:600;margin-bottom:8px;">
+        以下是 Jayer & IQOO Gemini Band Combination：
+      </div>
+      <div style="overflow-x:auto;">
+      <table>
+        <thead>
+          <tr>
+            <th>PROJECT</th>
+            <th>REF Phone Name</th>
+            <th>sim1_nw</th>
+            <th>sim2_nw</th>
+            <th>sim1_band</th>
+            <th>sim2_band</th>
+            <th>RAT MODE</th>
+            <th>DA Type</th>
+          </tr>
+        </thead>
+        <tbody>
+          <tr><td>Jayer</td><td>1Q0013</td><td>SA</td><td>SA</td><td>N1</td><td>N28</td><td>SA+SA</td><td>DR-DSDA</td></tr>
+          <tr><td>Jayer</td><td>1Q0013</td><td>SA</td><td>SA</td><td>N41</td><td>N41</td><td>SA+SA</td><td>DSDA</td></tr>
+          <tr><td>Jayer</td><td>1Q0013</td><td>SA</td><td>SA</td><td>N41</td><td>N78</td><td>SA+SA</td><td>DSDA</td></tr>
+          <tr><td>Jayer</td><td>1Q0013</td><td>SA</td><td>SA</td><td>N78</td><td>N28</td><td>SA+SA</td><td>DSDA</td></tr>
+          <tr><td>Jayer</td><td>1Q0013</td><td>SA</td><td>SA</td><td>N78</td><td>N41</td><td>SA+SA</td><td>DSDA</td></tr>
+          <tr><td>Jayer</td><td>1Q0013</td><td>SA</td><td>SA</td><td>N78</td><td>N78</td><td>SA+SA</td><td>Co-Cell 1TX DSDA</td></tr>
+          <tr><td>Jayer</td><td>1Q0013</td><td>SA</td><td>LTE</td><td>N28</td><td>B1</td><td>SA+L</td><td>DR-DSDA</td></tr>
+          <tr><td>Jayer</td><td>1Q0013</td><td>SA</td><td>LTE</td><td>N78</td><td>B1</td><td>SA+L</td><td>DR-DSDA</td></tr>
+          <tr><td>Jayer</td><td>1Q0013</td><td>SA</td><td>LTE</td><td>N28</td><td>B39</td><td>SA+L</td><td>DR-DSDA</td></tr>
+          <tr><td>Jayer</td><td>1Q0013</td><td>SA</td><td>LTE</td><td>N78</td><td>B1</td><td>SA+L</td><td>DSDA</td></tr>
+          <tr><td>Jayer</td><td>1Q0013</td><td>SA</td><td>LTE</td><td>N41</td><td>B3</td><td>SA+L</td><td>DSDA</td></tr>
+          <tr><td>Jayer</td><td>1Q0013</td><td>SA</td><td>LTE</td><td>N78</td><td>B3</td><td>SA+L</td><td>DSDA</td></tr>
+          <tr><td>Jayer</td><td>1Q0013</td><td>SA</td><td>LTE</td><td>N78</td><td>B39</td><td>SA+L</td><td>DSDA</td></tr>
+          <tr><td>Jayer</td><td>1Q0013</td><td>LTE</td><td>SA</td><td>B41</td><td>N78</td><td>L+SA</td><td>DSDA</td></tr>
+        </tbody>
+      </table>
+      </div>
+    `
+    },
+    "delayAfter": 1400
+  },
+  {
+    "user": "Provide the trial route which traverse all top cells for CMCC",
+    "ai": {
+      "searchings": [
+        {"text": "Getting top cells of CMCC...", "time": 900},
+        {"text": "Utilizing MapInsight Agents...", "time": 1000}
+      ],
+      "searchingDelay": 300,
+      "reply": `
+        <div style="font-weight:600;margin-bottom:10px;">Here is the trial route traversing all top cells for CMCC:</div>
+        <a href="https://maps.app.goo.gl/f2sSYkc3rWiEXTiB7?g_st=ac" target="_blank">Google Map Route Link</a>
+        <div style="margin:10px 0;">
+          <img src="./map.png" alt="CMCC Route Map">
+        </div>
       `
     },
-    "delayAfter": 1200
-  },
-  {
-    "user": "Thank you!",
-    "ai": {
-      "searchings": [
-        {"text": "Processing...", "time": 700}
-      ],
-      "searchingDelay": 200,
-      "reply": "You're welcome! Have a nice day!"
-    },
-    "delayAfter": 1500
+    "delayAfter": 1300
   }
 ];
-// ========== END JSON ==========
-
 document.addEventListener('DOMContentLoaded', function() {
     const chatContainer = document.getElementById('chat-container');
     const userInput = document.getElementById('user-input');
     const sendButton = document.getElementById('send-button');
-
     let scriptIndex = 0;
-
-    // ========== 打字動畫 for AI 回答 ==========
-    function typewriterEffect(container, text, onDone) {
-        container.innerHTML = '';
-        let i = 0;
-        function nextChar() {
-            if (i <= text.length) {
-                container.innerHTML = escapeHtml(text.slice(0, i));
-                i++;
-                setTimeout(nextChar, 24 + Math.random()*18);
-            } else {
-                if (onDone) onDone();
-            }
-        }
-        nextChar();
-    }
 
     function addMessage(type, message, withTypewriter) {
         const messageContainer = document.createElement('div');
@@ -205,11 +190,12 @@ document.addEventListener('DOMContentLoaded', function() {
         }
         chatContainer.appendChild(messageContainer);
         chatContainer.scrollTop = chatContainer.scrollHeight;
-
-        // AI 逐字動畫，遇到table/HTML就直接全部印出
+        // 如果AI內容有表格、圖片或連結，就直接innerHTML顯示，不做打字動畫
         if (type === 'ai' && withTypewriter) {
             const bubble = messageContainer.querySelector('.ai-bubble');
-            if (/<table[\s\S]*?>[\s\S]*?<\/table>/.test(message)) {
+            if (/<table[\s\S]*?>[\s\S]*?<\/table>/.test(message) ||
+                /<img[\s\S]*?>/.test(message) ||
+                /<a\s+href=/.test(message)) {
                 bubble.innerHTML = message;
             } else {
                 typewriterEffect(bubble, message);
@@ -218,7 +204,20 @@ document.addEventListener('DOMContentLoaded', function() {
             messageContainer.querySelector('.ai-bubble').innerHTML = escapeHtml(message);
         }
     }
-
+    function typewriterEffect(container, text, onDone) {
+        container.innerHTML = '';
+        let i = 0;
+        function nextChar() {
+            if (i <= text.length) {
+                container.innerHTML = escapeHtml(text.slice(0, i));
+                i++;
+                setTimeout(nextChar, 24 + Math.random()*18);
+            } else {
+                if (onDone) onDone();
+            }
+        }
+        nextChar();
+    }
     function showTypingIndicator(text) {
         removeTypingIndicator();
         const typingContainer = document.createElement('div');
@@ -291,7 +290,7 @@ document.addEventListener('DOMContentLoaded', function() {
                 userInput.value = '';
                 setTimeout(() => {
                     playAiSearchings(current.ai, function() {
-                        addMessage('ai', current.ai.reply, true); // AI逐字輸出或表格
+                        addMessage('ai', current.ai.reply, true);
                         scriptIndex++;
                         setTimeout(autoSendMessage, current.delayAfter || 1200);
                     });
@@ -322,3 +321,4 @@ document.addEventListener('DOMContentLoaded', function() {
 </script>
 </body>
 </html>
+
