@@ -1,0 +1,250 @@
+<!DOCTYPE html>
+<html lang="zh-Hant">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=450, initial-scale=1">
+    <title>AI Test Plan Assistant - Chatbot Demo</title>
+    <style>
+        body { background: #f3f4f6; font-family: 'Segoe UI', 'Arial', sans-serif; margin: 0; padding: 0;}
+        #main-wrapper { max-width: 450px; margin: 40px auto; box-shadow: 0 6px 32px #0001; border-radius: 22px; overflow: hidden; background: #fff;}
+        .chat-header {
+            display: flex;
+            align-items: center;
+            background: #6366f1;
+            color: #fff;
+            padding: 8px 16px 8px 14px;
+            border-bottom: 1px solid #e0e7ff33;
+            position: relative;
+            min-height: 40px;
+        }
+        .header-logo {
+            width: 32px;
+            height: 32px;
+            border-radius: 50%;
+            background: #fff;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            margin-right: 10px;
+            font-size: 1.25rem;
+            font-weight: bold;
+            color: #6366f1;
+            box-shadow: 0 1px 4px #6366f122;
+            overflow: hidden;
+        }
+        .header-title {
+            font-size: 1.1rem;
+            font-weight: 600;
+            letter-spacing: 0.5px;
+        }
+        #chat-container { height: 400px; overflow-y: auto; padding: 24px 16px; background: #f8fafc;}
+        .message-container { display: flex; align-items: flex-end; margin-bottom: 18px;}
+        .user-bubble, .ai-bubble { padding: 10px 18px; border-radius: 18px; max-width: 68%; font-size: 1rem; word-break: break-word; box-shadow: 0 2px 10px #0001;}
+        .user-bubble { background: #6366f1; color: #fff; margin-left: auto; margin-right: 8px; border-bottom-right-radius: 4px;}
+        .ai-bubble { background: #e0e7ff; color: #333; margin-right: auto; margin-left: 8px; border-bottom-left-radius: 4px;}
+        .user-avatar, .ai-avatar { width: 34px; height: 34px; border-radius: 50%; display: flex; align-items: center; justify-content: center; font-weight: bold; font-size: 1.1rem; box-shadow: 0 2px 8px #0002; flex-shrink: 0;}
+        .ai-avatar { background: #6366f1; color: #fff;}
+        .user-avatar { background: #fbbf24; color: #fff;}
+        .input-area { display: flex; background: #fff; border-top: 1px solid #e5e7eb; padding: 13px 10px;}
+        #user-input { flex: 1; font-size: 1rem; padding: 8px 13px; border: 1px solid #e5e7eb; border-radius: 10px 0 0 10px; outline: none; background: #f3f4f6; transition: box-shadow 0.2s;}
+        #user-input:focus { box-shadow: 0 0 0 2px #a5b4fc; border-color: #a5b4fc; background: #fff;}
+        #send-button { background: #6366f1; color: #fff; border: none; border-radius: 0 10px 10px 0; padding: 0 20px; cursor: pointer; transition: background 0.2s; display: flex; align-items: center; justify-content: center;}
+        #send-button:hover { background: #4338ca;}
+        .typing-indicator { display: flex; align-items: center; background: #e0e7ff; color: #6366f1; padding: 8px 14px; border-radius: 16px; font-size: 1rem; margin-left: 8px;}
+        .typing-dot { width: 7px; height: 7px; background: #6366f1; border-radius: 50%; margin: 0 2px; animation: blink 1.2s infinite both; opacity: 0.6;}
+        .typing-dot:nth-child(2) { animation-delay: 0.2s; }
+        .typing-dot:nth-child(3) { animation-delay: 0.4s; }
+        @keyframes blink { 0%, 100% { opacity: 0.6; } 50% { opacity: 1; } }
+    </style>
+</head>
+<body>
+<div id="main-wrapper">
+    <!-- Header with logo position -->
+    <div class="chat-header">
+        <div class="header-logo">
+            <!-- LOGO: 可換成 <img src="your-logo.png" ...> -->
+            <span style="font-size:1.1rem;">🤖</span>
+        </div>
+        <div class="header-title">AI Test Plan Assistant</div>
+    </div>
+    <!-- Chat Area -->
+    <div id="chat-container"></div>
+    <!-- Input Area -->
+    <div class="input-area">
+        <input type="text" id="user-input" placeholder="Type your message..." autocomplete="off">
+        <button id="send-button" title="Send">
+            <svg xmlns="http://www.w3.org/2000/svg" class="h-5 w-5" viewBox="0 0 20 20" fill="currentColor" width="22" height="22">
+                <path fill-rule="evenodd" d="M10.293 3.293a1 1 0 011.414 0l6 6a1 1 0 010 1.414l-6 6a1 1 0 01-1.414-1.414L14.586 11H3a1 1 0 110-2h11.586l-4.293-4.293a1 1 0 010-1.414z" clip-rule="evenodd"/>
+            </svg>
+        </button>
+    </div>
+</div>
+
+<script>
+// ======= 對話腳本 JSON 格式 =======
+const chatScript = [
+  {
+    "user": "Hello!",
+    "ai": {
+      "searching": "Analyzing your request...",
+      "searchingTime": 1200,
+      "searchingDelay": 350,
+      "reply": "Hi there! How can I assist you today?"
+    },
+    "delayAfter": 1000
+  },
+  {
+    "user": "What is the weather today?",
+    "ai": {
+      "searching": "Searching weather database...",
+      "searchingTime": 1800,
+      "searchingDelay": 500,
+      "reply": "The weather today is sunny with a high of 28°C."
+    },
+    "delayAfter": 1300
+  },
+  {
+    "user": "Can you recommend a good restaurant nearby?",
+    "ai": {
+      "searching": "Looking for good restaurants...",
+      "searchingTime": 2200,
+      "searchingDelay": 400,
+      "reply": "Sure! There is a nice Italian restaurant 5 minutes away."
+    },
+    "delayAfter": 1100
+  },
+  {
+    "user": "Thank you!",
+    "ai": {
+      "searching": "Processing...",
+      "searchingTime": 1000,
+      "searchingDelay": 250,
+      "reply": "You're welcome! Have a nice day!"
+    },
+    "delayAfter": 1500
+  }
+];
+// ========== END JSON ==========
+
+document.addEventListener('DOMContentLoaded', function() {
+    const chatContainer = document.getElementById('chat-container');
+    const userInput = document.getElementById('user-input');
+    const sendButton = document.getElementById('send-button');
+
+    let scriptIndex = 0;
+
+    function addMessage(type, message) {
+        const messageContainer = document.createElement('div');
+        messageContainer.className = 'message-container';
+        if (type === 'user') {
+            messageContainer.innerHTML = `
+                <div class="flex-grow"></div>
+                <div class="chat-bubble user-bubble">${escapeHtml(message)}</div>
+                <div class="avatar user-avatar ml-2">U</div>
+            `;
+        } else {
+            messageContainer.innerHTML = `
+                <div class="avatar ai-avatar mr-2">AI</div>
+                <div class="chat-bubble ai-bubble">${escapeHtml(message)}</div>
+                <div class="flex-grow"></div>
+            `;
+        }
+        chatContainer.appendChild(messageContainer);
+        chatContainer.scrollTop = chatContainer.scrollHeight;
+    }
+
+    function showTypingIndicator(text) {
+        const typingContainer = document.createElement('div');
+        typingContainer.className = 'message-container';
+        typingContainer.id = 'typing-indicator';
+        typingContainer.innerHTML = `
+            <div class="avatar ai-avatar mr-2">AI</div>
+            <div class="typing-indicator">
+                <span class="mr-2">${escapeHtml(text || 'Searching...')}</span>
+                <div class="typing-dot"></div>
+                <div class="typing-dot"></div>
+                <div class="typing-dot"></div>
+            </div>
+            <div class="flex-grow"></div>
+        `;
+        chatContainer.appendChild(typingContainer);
+        chatContainer.scrollTop = chatContainer.scrollHeight;
+    }
+    function removeTypingIndicator() {
+        const indicator = document.getElementById('typing-indicator');
+        if (indicator) indicator.remove();
+    }
+    function escapeHtml(text) {
+        return text.replace(/[&<>"']/g, function (m) {
+            return ({
+                '&': '&amp;',
+                '<': '&lt;',
+                '>': '&gt;',
+                '"': '&quot;',
+                "'": '&#39;'
+            })[m];
+        });
+    }
+    function typeInInput(text, callback) {
+        userInput.value = '';
+        let i = 0;
+        function typeChar() {
+            if (i <= text.length) {
+                userInput.value = text.slice(0, i);
+                i++;
+                setTimeout(typeChar, 42 + Math.random()*28);
+            } else {
+                if (callback) callback();
+            }
+        }
+        typeChar();
+    }
+
+    function autoSendMessage() {
+        if (scriptIndex >= chatScript.length) return;
+        const current = chatScript[scriptIndex];
+
+        typeInInput(current.user, function() {
+            setTimeout(() => {
+                addMessage('user', current.user);
+                userInput.value = '';
+                // ** 這裡延遲一段再 show AI typing **
+                setTimeout(() => {
+                    showTypingIndicator(current.ai.searching || "Searching...");
+                    setTimeout(() => {
+                        removeTypingIndicator();
+                        addMessage('ai', current.ai.reply);
+                        scriptIndex++;
+                        setTimeout(autoSendMessage, current.delayAfter || 1200);
+                    }, current.ai.searchingTime || 1600);
+                }, current.ai.searchingDelay || 350);
+            }, 340 + Math.random()*200);
+        });
+    }
+
+    setTimeout(autoSendMessage, 700);
+
+    // 手動訊息
+    sendButton.addEventListener('click', () => manualSend());
+    userInput.addEventListener('keypress', function(e) {
+        if (e.key === 'Enter') manualSend();
+    });
+
+    function manualSend() {
+        const message = userInput.value.trim();
+        if (!message) return;
+        addMessage('user', message);
+        userInput.value = '';
+        setTimeout(() => {
+            showTypingIndicator("Processing...");
+            setTimeout(() => {
+                removeTypingIndicator();
+                addMessage('ai', "I'm sorry, I don't have enough information to answer that question. Could you provide more details?");
+            }, 1600);
+        }, 300);
+    }
+});
+</script>
+</body>
+</html>
+
