@@ -2,20 +2,20 @@
 <html lang="zh-Hant">
 <head>
     <meta charset="UTF-8">
-    <meta name="viewport" content="width=450, initial-scale=1">
+    <meta name="viewport" content="width=648, initial-scale=1">
     <title>AI Test Plan Assistant - Chatbot Demo</title>
     <style>
         body { background: #f3f4f6; font-family: 'Segoe UI', 'Arial', sans-serif; margin: 0; padding: 0;}
-        #main-wrapper { max-width: 450px; margin: 40px auto; box-shadow: 0 6px 32px #0001; border-radius: 22px; overflow: hidden; background: #fff;}
+        #main-wrapper { max-width: 540px; margin: 48px auto; box-shadow: 0 6px 32px #0001; border-radius: 22px; overflow: hidden; background: #fff;}
         .chat-header {
             display: flex;
             align-items: center;
             background: #6366f1;
             color: #fff;
-            padding: 8px 16px 8px 14px;
+            padding: 10px 19px 10px 17px;
             border-bottom: 1px solid #e0e7ff33;
             position: relative;
-            min-height: 40px;
+            min-height: 48px;
         }
         .header-logo {
             width: 32px;
@@ -37,7 +37,7 @@
             font-weight: 600;
             letter-spacing: 0.5px;
         }
-        #chat-container { height: 400px; overflow-y: auto; padding: 24px 16px; background: #f8fafc;}
+        #chat-container { height: 480px; overflow-y: auto; padding: 29px 20px; background: #f8fafc;}
         .message-container { display: flex; align-items: flex-end; margin-bottom: 18px;}
         .user-bubble, .ai-bubble { padding: 10px 18px; border-radius: 18px; max-width: 68%; font-size: 1rem; word-break: break-word; box-shadow: 0 2px 10px #0001;}
         .user-bubble { background: #6366f1; color: #fff; margin-left: auto; margin-right: 8px; border-bottom-right-radius: 4px;}
@@ -45,7 +45,7 @@
         .user-avatar, .ai-avatar { width: 34px; height: 34px; border-radius: 50%; display: flex; align-items: center; justify-content: center; font-weight: bold; font-size: 1.1rem; box-shadow: 0 2px 8px #0002; flex-shrink: 0;}
         .ai-avatar { background: #6366f1; color: #fff;}
         .user-avatar { background: #fbbf24; color: #fff;}
-        .input-area { display: flex; background: #fff; border-top: 1px solid #e5e7eb; padding: 13px 10px;}
+        .input-area { display: flex; background: #fff; border-top: 1px solid #e5e7eb; padding: 16px 14px;}
         #user-input { flex: 1; font-size: 1rem; padding: 8px 13px; border: 1px solid #e5e7eb; border-radius: 10px 0 0 10px; outline: none; background: #f3f4f6; transition: box-shadow 0.2s;}
         #user-input:focus { box-shadow: 0 0 0 2px #a5b4fc; border-color: #a5b4fc; background: #fff;}
         #send-button { background: #6366f1; color: #fff; border: none; border-radius: 0 10px 10px 0; padding: 0 20px; cursor: pointer; transition: background 0.2s; display: flex; align-items: center; justify-content: center;}
@@ -54,22 +54,25 @@
         .typing-dot { width: 7px; height: 7px; background: #6366f1; border-radius: 50%; margin: 0 2px; animation: blink 1.2s infinite both; opacity: 0.6;}
         .typing-dot:nth-child(2) { animation-delay: 0.2s; }
         .typing-dot:nth-child(3) { animation-delay: 0.4s; }
+        /* 美化AI表格 */
+        .ai-bubble table { border-collapse: collapse; width: 100%; margin-top: 6px; margin-bottom: 6px;}
+        .ai-bubble th, .ai-bubble td { border: none; padding: 7px 8px; text-align: left;}
+        .ai-bubble th { background: #e0e7ff; font-weight: 600;}
+        .ai-bubble tr:nth-child(even) td { background: #f3f4f6; }
+        .ai-bubble tr:last-child td { border-bottom: none;}
+        .ai-bubble td, .ai-bubble th { font-size: 0.98rem;}
         @keyframes blink { 0%, 100% { opacity: 0.6; } 50% { opacity: 1; } }
     </style>
 </head>
 <body>
 <div id="main-wrapper">
-    <!-- Header with logo position -->
     <div class="chat-header">
         <div class="header-logo">
-            <!-- LOGO: 可換成 <img src="your-logo.png" ...> -->
             <span style="font-size:1.1rem;">🤖</span>
         </div>
         <div class="header-title">AI Test Plan Assistant</div>
     </div>
-    <!-- Chat Area -->
     <div id="chat-container"></div>
-    <!-- Input Area -->
     <div class="input-area">
         <input type="text" id="user-input" placeholder="Type your message..." autocomplete="off">
         <button id="send-button" title="Send">
@@ -79,16 +82,16 @@
         </button>
     </div>
 </div>
-
 <script>
-// ======= 對話腳本 JSON 格式 =======
+// ======= 對話腳本 JSON 格式（多段searching）======
 const chatScript = [
   {
     "user": "Hello!",
     "ai": {
-      "searching": "Analyzing your request...",
-      "searchingTime": 1200,
-      "searchingDelay": 350,
+      "searchings": [
+        {"text": "Analyzing your request...", "time": 900}
+      ],
+      "searchingDelay": 250,
       "reply": "Hi there! How can I assist you today?"
     },
     "delayAfter": 1000
@@ -96,29 +99,64 @@ const chatScript = [
   {
     "user": "What is the weather today?",
     "ai": {
-      "searching": "Searching weather database...",
-      "searchingTime": 1800,
-      "searchingDelay": 500,
+      "searchings": [
+        {"text": "Searching weather database...", "time": 900},
+        {"text": "Checking for the latest updates...", "time": 1000}
+      ],
+      "searchingDelay": 400,
       "reply": "The weather today is sunny with a high of 28°C."
     },
-    "delayAfter": 1300
+    "delayAfter": 1200
   },
   {
     "user": "Can you recommend a good restaurant nearby?",
     "ai": {
-      "searching": "Looking for good restaurants...",
-      "searchingTime": 2200,
+      "searchings": [
+        {"text": "正在搜尋餐廳...", "time": 1000},
+        {"text": "分析評價資料...", "time": 1200}
+      ],
       "searchingDelay": 400,
-      "reply": "Sure! There is a nice Italian restaurant 5 minutes away."
+      "reply": `
+        <div style="font-weight:600;margin-bottom:8px;">以下是附近五家熱門餐廳：</div>
+        <table>
+          <thead>
+            <tr>
+              <th style="border-radius:8px 0 0 8px;">名稱</th>
+              <th>價格</th>
+              <th>距離</th>
+              <th>評價</th>
+              <th style="border-radius:0 8px 8px 0;">特色</th>
+            </tr>
+          </thead>
+          <tbody>
+            <tr>
+              <td>義式小館</td><td>$</td><td>300m</td><td>4.6</td><td>手工披薩</td>
+            </tr>
+            <tr>
+              <td>阿成牛肉麵</td><td>$</td><td>450m</td><td>4.3</td><td>平價大碗</td>
+            </tr>
+            <tr>
+              <td>日日咖啡</td><td>$$</td><td>520m</td><td>4.7</td><td>早午餐</td>
+            </tr>
+            <tr>
+              <td>新味壽司</td><td>$$</td><td>390m</td><td>4.5</td><td>生魚片</td>
+            </tr>
+            <tr>
+              <td>湘園小炒</td><td>$</td><td>200m</td><td>4.2</td><td>家常菜</td>
+            </tr>
+          </tbody>
+        </table>
+      `
     },
-    "delayAfter": 1100
+    "delayAfter": 1200
   },
   {
     "user": "Thank you!",
     "ai": {
-      "searching": "Processing...",
-      "searchingTime": 1000,
-      "searchingDelay": 250,
+      "searchings": [
+        {"text": "Processing...", "time": 700}
+      ],
+      "searchingDelay": 200,
       "reply": "You're welcome! Have a nice day!"
     },
     "delayAfter": 1500
@@ -133,7 +171,23 @@ document.addEventListener('DOMContentLoaded', function() {
 
     let scriptIndex = 0;
 
-    function addMessage(type, message) {
+    // ========== 打字動畫 for AI 回答 ==========
+    function typewriterEffect(container, text, onDone) {
+        container.innerHTML = '';
+        let i = 0;
+        function nextChar() {
+            if (i <= text.length) {
+                container.innerHTML = escapeHtml(text.slice(0, i));
+                i++;
+                setTimeout(nextChar, 24 + Math.random()*18);
+            } else {
+                if (onDone) onDone();
+            }
+        }
+        nextChar();
+    }
+
+    function addMessage(type, message, withTypewriter) {
         const messageContainer = document.createElement('div');
         messageContainer.className = 'message-container';
         if (type === 'user') {
@@ -145,15 +199,28 @@ document.addEventListener('DOMContentLoaded', function() {
         } else {
             messageContainer.innerHTML = `
                 <div class="avatar ai-avatar mr-2">AI</div>
-                <div class="chat-bubble ai-bubble">${escapeHtml(message)}</div>
+                <div class="chat-bubble ai-bubble"></div>
                 <div class="flex-grow"></div>
             `;
         }
         chatContainer.appendChild(messageContainer);
         chatContainer.scrollTop = chatContainer.scrollHeight;
+
+        // AI 逐字動畫，遇到table/HTML就直接全部印出
+        if (type === 'ai' && withTypewriter) {
+            const bubble = messageContainer.querySelector('.ai-bubble');
+            if (/<table[\s\S]*?>[\s\S]*?<\/table>/.test(message)) {
+                bubble.innerHTML = message;
+            } else {
+                typewriterEffect(bubble, message);
+            }
+        } else if (type === 'ai') {
+            messageContainer.querySelector('.ai-bubble').innerHTML = escapeHtml(message);
+        }
     }
 
     function showTypingIndicator(text) {
+        removeTypingIndicator();
         const typingContainer = document.createElement('div');
         typingContainer.className = 'message-container';
         typingContainer.id = 'typing-indicator';
@@ -199,52 +266,59 @@ document.addEventListener('DOMContentLoaded', function() {
         }
         typeChar();
     }
-
+    function playAiSearchings(ai, onDone) {
+        let idx = 0;
+        function nextSearching() {
+            if (!ai.searchings || idx >= ai.searchings.length) {
+                removeTypingIndicator();
+                if (onDone) onDone();
+                return;
+            }
+            showTypingIndicator(ai.searchings[idx].text);
+            setTimeout(() => {
+                idx++;
+                nextSearching();
+            }, ai.searchings[idx].time || 1000);
+        }
+        nextSearching();
+    }
     function autoSendMessage() {
         if (scriptIndex >= chatScript.length) return;
         const current = chatScript[scriptIndex];
-
         typeInInput(current.user, function() {
             setTimeout(() => {
                 addMessage('user', current.user);
                 userInput.value = '';
-                // ** 這裡延遲一段再 show AI typing **
                 setTimeout(() => {
-                    showTypingIndicator(current.ai.searching || "Searching...");
-                    setTimeout(() => {
-                        removeTypingIndicator();
-                        addMessage('ai', current.ai.reply);
+                    playAiSearchings(current.ai, function() {
+                        addMessage('ai', current.ai.reply, true); // AI逐字輸出或表格
                         scriptIndex++;
                         setTimeout(autoSendMessage, current.delayAfter || 1200);
-                    }, current.ai.searchingTime || 1600);
+                    });
                 }, current.ai.searchingDelay || 350);
             }, 340 + Math.random()*200);
         });
     }
-
     setTimeout(autoSendMessage, 700);
-
-    // 手動訊息
     sendButton.addEventListener('click', () => manualSend());
     userInput.addEventListener('keypress', function(e) {
         if (e.key === 'Enter') manualSend();
     });
-
     function manualSend() {
         const message = userInput.value.trim();
         if (!message) return;
         addMessage('user', message);
         userInput.value = '';
         setTimeout(() => {
-            showTypingIndicator("Processing...");
-            setTimeout(() => {
-                removeTypingIndicator();
-                addMessage('ai', "I'm sorry, I don't have enough information to answer that question. Could you provide more details?");
-            }, 1600);
+            playAiSearchings(
+                { searchings: [ { text: "Processing...", time: 700 }, { text: "Querying...", time: 700 } ] },
+                function() {
+                    addMessage('ai', "I'm sorry, I don't have enough information to answer that question. Could you provide more details?", true);
+                }
+            );
         }, 300);
     }
 });
 </script>
 </body>
 </html>
-
