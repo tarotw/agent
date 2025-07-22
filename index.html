@@ -102,9 +102,9 @@ const chatScript = [
     "user": "provide the joint band and gemini combination for jayer and iqoo",
     "ai": {
       "searchings": [
-        { "text": "Searching for Internal Phone's capability...", "time": 900 },
-        { "text": "Searching for Reference Phone's capability...", "time": 900 },
-        { "text": "Joining the Gemini and Band Combination...", "time": 1100 }
+        { "text": "Searching for IQQQ13 capability...", "time": 2000 },
+        { "text": "Searching for Jayer capability...", "time": 2000 },
+        { "text": "Joining the Gemini and Band Combination from both tools...", "time": 3300 }
       ],
       "searchingDelay": 350,
       "reply": `
@@ -126,15 +126,15 @@ const chatScript = [
           </tr>
         </thead>
         <tbody>
-          <tr><td>Jayer</td><td>1Q0013</td><td>SA</td><td>SA</td><td>N1</td><td>N28</td><td>SA+SA</td><td>DR-DSDA</td></tr>
-          <tr><td>Jayer</td><td>1Q0013</td><td>SA</td><td>SA</td><td>N41</td><td>N41</td><td>SA+SA</td><td>DSDA</td></tr>
-          <tr><td>Jayer</td><td>1Q0013</td><td>SA</td><td>SA</td><td>N78</td><td>N41</td><td>SA+SA</td><td>DSDA</td></tr>
-          <tr><td>Jayer</td><td>1Q0013</td><td>SA</td><td>SA</td><td>N78</td><td>N78</td><td>SA+SA</td><td>Co-Cell 1TX DSDA</td></tr>
-          <tr><td>Jayer</td><td>1Q0013</td><td>SA</td><td>LTE</td><td>N28</td><td>B1</td><td>SA+L</td><td>DR-DSDA</td></tr>
-          <tr><td>Jayer</td><td>1Q0013</td><td>SA</td><td>LTE</td><td>N28</td><td>B39</td><td>SA+L</td><td>DR-DSDA</td></tr>
-          <tr><td>Jayer</td><td>1Q0013</td><td>SA</td><td>LTE</td><td>N78</td><td>B1</td><td>SA+L</td><td>DSDA</td></tr>
-          <tr><td>Jayer</td><td>1Q0013</td><td>SA</td><td>LTE</td><td>N78</td><td>B3</td><td>SA+L</td><td>DSDA</td></tr>
-          <tr><td>Jayer</td><td>1Q0013</td><td>LTE</td><td>SA</td><td>B41</td><td>N78</td><td>L+SA</td><td>DSDA</td></tr>
+          <tr><td>Jayer</td><td>1Q0013</td><td>SA</td><td>SA</td><td>N1</td><td>N28</td><td>DR-DSDA</td></tr>
+          <tr><td>Jayer</td><td>1Q0013</td><td>SA</td><td>SA</td><td>N41</td><td>N41</td><td>DSDA</td></tr>
+          <tr><td>Jayer</td><td>1Q0013</td><td>SA</td><td>SA</td><td>N78</td><td>N41</td><td>DSDA</td></tr>
+          <tr><td>Jayer</td><td>1Q0013</td><td>SA</td><td>SA</td><td>N78</td><td>N78</td><td>Co-Cell 1TX DSDA</td></tr>
+          <tr><td>Jayer</td><td>1Q0013</td><td>SA</td><td>LTE</td><td>N28</td><td>B1</td><td>DR-DSDA</td></tr>
+          <tr><td>Jayer</td><td>1Q0013</td><td>SA</td><td>LTE</td><td>N28</td><td>B39</td><td>DR-DSDA</td></tr>
+          <tr><td>Jayer</td><td>1Q0013</td><td>SA</td><td>LTE</td><td>N78</td><td>B1</td><td>DSDA</td></tr>
+          <tr><td>Jayer</td><td>1Q0013</td><td>SA</td><td>LTE</td><td>N78</td><td>B3</td><td>DSDA</td></tr>
+          <tr><td>Jayer</td><td>1Q0013</td><td>LTE</td><td>SA</td><td>B41</td><td>N78</td><td>DSDA</td></tr>
         </tbody>
       </table>
       </div>
@@ -143,11 +143,11 @@ const chatScript = [
     "delayAfter": 1400
   },
   {
-    "user": "Provide the trial route which traverse all top cells for CMCC",
+    "user": "The trial route which traverse all top cells for CMCC",
     "ai": {
       "searchings": [
-        {"text": "Getting top cells of CMCC...", "time": 900},
-        {"text": "Utilizing MapInsight Agents...", "time": 1000}
+        {"text": "Getting top cells of CMCC...", "time": 2000},
+        {"text": "Utilizing MapInsight Agents...", "time": 2000}
       ],
       "searchingDelay": 300,
       "reply": `
@@ -159,6 +159,42 @@ const chatScript = [
       `
     },
     "delayAfter": 1300
+  },
+  {
+    "user": "find the TMS test cases for NW KPI with estimated execution time",
+    "ai": {
+      "searchings": [
+        { "text": "Searching for TMS TC for NW KPI...", "time": 2000 },
+        { "text": "Estimating Execution Times...", "time": 2000 },
+        { "text": "Joining the TCid and estimations...", "time": 3300 }
+      ],
+      "searchingDelay": 350,
+      "reply": `
+      <div style="font-weight:600;margin-bottom:8px;">
+      I think you meant 'IQOO13'. The following is joint Jayer & IQOO13 Gemini band combination：
+      </div>
+      <div style="overflow-x:auto;">
+        <table>
+          <thead>
+            <tr>
+              <th>TCid</th>
+              <th>Predicted Exc Time </th>
+              <th>link</th>
+            </tr>
+          </thead>
+          <tbody>
+            <tr><td>Perf_NW_KPI_001</td><td>50.9141</td><td><a href="https://example.com/kpi001">View</a></td></tr>
+            <tr><td>Perf_NW_KPI_002</td><td>90.2104</td><td><a href="https://example.com/kpi002">View</a></td></tr>
+            <tr><td>Perf_NW_KPI_008</td><td>26.8558</td><td><a href="https://example.com/kpi008">View</a></td></tr>
+            <tr><td>Perf_NW_KPI_013</td><td>16.8421</td><td><a href="https://example.com/kpi013">View</a></td></tr>
+            <tr><td>Perf_NW_KPI_015</td><td>39.0906</td><td><a href="https://example.com/kpi015">View</a></td></tr>
+            <tr><td>Perf_NW_KPI_017</td><td>67.5335</td><td><a href="https://example.com/kpi017">View</a></td></tr>
+          </tbody>
+        </table>
+      </div>
+    `
+    },
+    "delayAfter": 1400
   }
 ];
 document.addEventListener('DOMContentLoaded', function() {
