@@ -222,18 +222,25 @@ document.addEventListener('DOMContentLoaded', function() {
         chatContainer.appendChild(messageContainer);
         chatContainer.scrollTop = chatContainer.scrollHeight;
         // 如果AI內容有表格、圖片或連結，就直接innerHTML顯示，不做打字動畫
-        if (type === 'ai' && withTypewriter) {
-            const bubble = messageContainer.querySelector('.ai-bubble');
-            if (/<table[\s\S]*?>[\s\S]*?<\/table>/.test(message) ||
-                /<img[\s\S]*?>/.test(message) ||
-                /<a\s+href=/.test(message)) {
-                bubble.innerHTML = message;
-            } else {
-                typewriterEffect(bubble, message);
-            }
-        } else if (type === 'ai') {
-            messageContainer.querySelector('.ai-bubble').innerHTML = escapeHtml(message);
+if (type === 'ai' && withTypewriter) {
+    const bubble = messageContainer.querySelector('.ai-bubble');
+    if (/<table[\s\S]*?>[\s\S]*?<\/table>/.test(message) ||
+        /<img[\s\S]*?>/.test(message) ||
+        /<a\s+href=/.test(message)) {
+        bubble.innerHTML = message;
+        // ⭐⭐⭐這段是新增的：圖片載入時自動scroll到底⭐⭐⭐
+        const imgs = bubble.querySelectorAll('img');
+        if (imgs.length > 0) {
+            imgs.forEach(img => {
+                img.addEventListener('load', function() {
+                    chatContainer.scrollTop = chatContainer.scrollHeight;
+                });
+            });
         }
+    } else {
+        typewriterEffect(bubble, message);
+    }
+}
     }
     function typewriterEffect(container, text, onDone) {
         container.innerHTML = '';
