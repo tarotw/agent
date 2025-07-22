@@ -1,3 +1,4 @@
+
 <!DOCTYPE html>
 <html lang="en">
 <head>
@@ -107,7 +108,7 @@ const chatScript = [
     { "text": "Synthesizing Gemini matrix and aligning joint band configuration...", "time": 3300 }
   ],
       "searchingDelay": 350,
-      "reply": 
+      "reply": `
       <div style="font-weight:600;margin-bottom:8px;">
       Acknowledged. Detected correction: 'IQOO13' confirmed. Proceeding with joint Gemini Band Configuration for Jayer & IQOO13 as follows:
       </div>
@@ -137,7 +138,7 @@ const chatScript = [
         </tbody>
       </table>
       </div>
-    
+    `
     },
     "delayAfter": 1400
   },
@@ -149,13 +150,13 @@ const chatScript = [
     { "text": "Deploying MapInsight Agents for optimized spatial traversal computation...", "time": 2000 }
   ],
       "searchingDelay": 300,
-      "reply": 
+      "reply": `
         <div style="font-weight:600;margin-bottom:10px;">Here is the trial route traversing all top cells for CMCC:</div>
         <a href="https://maps.app.goo.gl/f2sSYkc3rWiEXTiB7?g_st=ac" target="_blank">Google Map Route Link</a>
         <div style="margin:10px 0;">
           <img src="./map.png" alt="CMCC Route Map">
         </div>
-      
+      `
     },
     "delayAfter": 1300
   },
@@ -168,7 +169,7 @@ const chatScript = [
     { "text": "Merging test case identifiers with corresponding time estimates...", "time": 3300 }
   ],
       "searchingDelay": 350,
-      "reply": 
+      "reply": `
       <div style="font-weight:600;margin-bottom:8px;">
       I have found 6 TCs with execution time of 291.45 mins
       </div>
@@ -191,7 +192,7 @@ const chatScript = [
           </tbody>
         </table>
       </div>
-    
+    `
     },
     "delayAfter": 1400
   }
@@ -206,40 +207,33 @@ document.addEventListener('DOMContentLoaded', function() {
         const messageContainer = document.createElement('div');
         messageContainer.className = 'message-container';
         if (type === 'user') {
-            messageContainer.innerHTML = 
+            messageContainer.innerHTML = `
                 <div class="flex-grow"></div>
                 <div class="chat-bubble user-bubble">${escapeHtml(message)}</div>
                 <div class="avatar user-avatar ml-2">U</div>
-            ;
+            `;
         } else {
-            messageContainer.innerHTML = 
+            messageContainer.innerHTML = `
                 <div class="avatar ai-avatar mr-2">AI</div>
                 <div class="chat-bubble ai-bubble"></div>
                 <div class="flex-grow"></div>
-            ;
+            `;
         }
         chatContainer.appendChild(messageContainer);
         chatContainer.scrollTop = chatContainer.scrollHeight;
         // 如果AI內容有表格、圖片或連結，就直接innerHTML顯示，不做打字動畫
-if (type === 'ai' && withTypewriter) {
-    const bubble = messageContainer.querySelector('.ai-bubble');
-    if (/<table[\s\S]*?>[\s\S]*?<\/table>/.test(message) ||
-        /<img[\s\S]*?>/.test(message) ||
-        /<a\s+href=/.test(message)) {
-        bubble.innerHTML = message;
-        // ⭐⭐⭐這段是新增的：圖片載入時自動scroll到底⭐⭐⭐
-        const imgs = bubble.querySelectorAll('img');
-        if (imgs.length > 0) {
-            imgs.forEach(img => {
-                img.addEventListener('load', function() {
-                    chatContainer.scrollTop = chatContainer.scrollHeight;
-                });
-            });
+        if (type === 'ai' && withTypewriter) {
+            const bubble = messageContainer.querySelector('.ai-bubble');
+            if (/<table[\s\S]*?>[\s\S]*?<\/table>/.test(message) ||
+                /<img[\s\S]*?>/.test(message) ||
+                /<a\s+href=/.test(message)) {
+                bubble.innerHTML = message;
+            } else {
+                typewriterEffect(bubble, message);
+            }
+        } else if (type === 'ai') {
+            messageContainer.querySelector('.ai-bubble').innerHTML = escapeHtml(message);
         }
-    } else {
-        typewriterEffect(bubble, message);
-    }
-}
     }
     function typewriterEffect(container, text, onDone) {
         container.innerHTML = '';
@@ -260,7 +254,7 @@ if (type === 'ai' && withTypewriter) {
         const typingContainer = document.createElement('div');
         typingContainer.className = 'message-container';
         typingContainer.id = 'typing-indicator';
-        typingContainer.innerHTML = 
+        typingContainer.innerHTML = `
             <div class="avatar ai-avatar mr-2">AI</div>
             <div class="typing-indicator">
                 <span class="mr-2">${escapeHtml(text || 'Searching...')}</span>
@@ -269,7 +263,7 @@ if (type === 'ai' && withTypewriter) {
                 <div class="typing-dot"></div>
             </div>
             <div class="flex-grow"></div>
-        ;
+        `;
         chatContainer.appendChild(typingContainer);
         chatContainer.scrollTop = chatContainer.scrollHeight;
     }
@@ -357,4 +351,4 @@ if (type === 'ai' && withTypewriter) {
 });
 </script>
 </body>
-</html>  
+</html>
