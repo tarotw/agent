@@ -477,6 +477,7 @@ document.addEventListener('DOMContentLoaded', function() {
         let i = 0;
         function nextChar() {
             if (i <= text.length) {
+                // Handle HTML entities if needed, but for plain text escapeHtml is sufficient
                 container.innerHTML = escapeHtml(text.slice(0, i));
                 i++;
                 setTimeout(nextChar, 24 + Math.random()*18);
@@ -513,11 +514,11 @@ document.addEventListener('DOMContentLoaded', function() {
 
     function escapeHtml(text) {
         const map = {
-            '&': '&',
-            '<': '<',
-            '>': '>',
-            '"': '"',
-            "'": '''
+            '&': '&amp;',
+            '<': '&lt;',
+            '>': '&gt;',
+            '"': '&quot;',
+            "'": '&#039;'
         };
         return text.replace(/[&<>"']/g, function(m) { return map[m]; });
     }
@@ -572,8 +573,7 @@ document.addEventListener('DOMContentLoaded', function() {
         });
     }
 
-    // 網頁加載後，延遲5秒再開始自動打字
-    setTimeout(autoSendMessage, 5000); // 延遲 5000 毫秒 (5秒)
+    setTimeout(autoSendMessage, 700);
 
     sendButton.addEventListener('click', () => manualSend());
     userInput.addEventListener('keypress', function(e) {
